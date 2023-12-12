@@ -25,10 +25,6 @@ public class PdfService {
         file.transferTo(new File(uploadedFilePath));
 
         List<String> numbersList = extractNumbersFromPdf(uploadedFilePath);
-        System.out.println("Danh sách số trong file PDF:");
-        for (String number : numbersList) {
-            System.out.println(number);
-        }
         convertPdfToExcel(uploadedFilePath, "D:\\codehaus\\save_excel");
         return numbersList;
     }
@@ -51,8 +47,8 @@ public class PdfService {
     }
 
     private void convertPdfToExcel(String pdfFilePath, String excelFolderPath) throws IOException {
-        String pdfFileName = new File(pdfFilePath).getName(); // Lấy tên của tệp PDF
-        String excelFilePath = excelFolderPath + File.separator + pdfFileName.replace(".pdf", ".xlsx"); // Tạo đường dẫn cho tệp Excel
+        String pdfFileName = new File(pdfFilePath).getName();
+        String excelFilePath = excelFolderPath + File.separator + pdfFileName.replace(".pdf", ".xlsx");
 
         try (PDDocument document = PDDocument.load(new File(pdfFilePath));
              Workbook workbook = new XSSFWorkbook()) {
