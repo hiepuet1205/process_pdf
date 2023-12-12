@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,10 @@ public class PdfService {
         String uploadedFilePath = "D:\\codehaus\\upload" + file.getOriginalFilename();
         file.transferTo(new File(uploadedFilePath));
 
+        String file_list_name = "D:\\codehaus\\save_list\\list_" + file.getOriginalFilename().replace(".pdf", ".txt");
+
         List<String> numbersList = extractNumbersFromPdf(uploadedFilePath);
+        saveListToFile(numbersList, file_list_name);
         convertPdfToExcel(uploadedFilePath, "D:\\codehaus\\save_excel");
         return numbersList;
     }
@@ -75,4 +79,11 @@ public class PdfService {
         }
     }
 
+    public void saveListToFile(List<String> dataList, String filePath) throws IOException {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            for (String data : dataList) {
+                writer.write(data + System.lineSeparator());
+            }
+        }
+    }
 }
